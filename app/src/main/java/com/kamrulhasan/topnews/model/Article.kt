@@ -1,7 +1,5 @@
 package com.kamrulhasan.topnews.model
 
-import org.jetbrains.annotations.Nullable
-
 data class Article(
     val author: String?,
     val content: String?,

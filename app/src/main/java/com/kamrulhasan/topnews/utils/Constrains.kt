@@ -1,5 +1,8 @@
 package com.kamrulhasan.topnews.utils
 
+const val URL_KEY = "NEWS_URL_KEY"
+const val DEFAULT_NEWS_PAGE = "https://www.bbc.com/bengali"
+
 class Constrains {
     companion object{
         const val viewPagerCount = 3

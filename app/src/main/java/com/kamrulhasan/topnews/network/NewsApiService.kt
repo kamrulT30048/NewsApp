@@ -1,6 +1,6 @@
 package com.kamrulhasan.topnews.network
 
-import com.kamrulhasan.topnews.model.News
+import com.kamrulhasan.topnews.model.NewsAPI
 import com.kamrulhasan.topnews.utils.Constrains
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
@@ -20,7 +20,7 @@ private val retrofit = Retrofit.Builder()
 interface NewsApiService {
 
     @GET(Constrains.getUrl_topHeadLine)
-    suspend fun getTopHeadLines() : News
+    suspend fun getTopHeadLines() : NewsAPI
 }
 
 object NewsApi{

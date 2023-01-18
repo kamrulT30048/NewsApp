@@ -8,7 +8,7 @@
     <fragment
         android:id="@+id/homeFragment"
         android:name="com.kamrulhasan.topnews.fragment.HomeFragment"
-        android:label="Top News Home"
+        android:label="News"
         tools:layout="@layout/fragment_home" />
     <fragment
         android:id="@+id/topNewsFragment"
@@ -25,4 +25,22 @@
         android:name="com.kamrulhasan.topnews.fragment.BookMarkFragment"
         android:label="BookMark News"
         tools:layout="@layout/fragment_book_mark" />
+    <fragment
+        android:id="@+id/webViewFragment"
+        android:name="com.kamrulhasan.topnews.fragment.WebViewFragment"
+        android:label="News"
+        tools:layout="@layout/fragment_web_view" >
+        <argument
+            android:name="newsUrl"
+            app:argType="string"
+            android:defaultValue="nothing" />
+    </fragment>
+    <fragment
+        android:id="@+id/USAFragment"
+        android:name="com.kamrulhasan.topnews.fragment.USAFragment"
+        android:label="USAFragment" >
+        <action
+            android:id="@+id/action_USAFragment_to_webViewFragment2"
+            app:destination="@id/webViewFragment" />
+    </fragment>
 </navigation>
