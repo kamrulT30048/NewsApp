@@ -27,7 +27,9 @@ abstract class ArticleDatabase : RoomDatabase(){
                     context.applicationContext,
                     ArticleDatabase::class.java,
                     "article_database"
-                ).build()
+                )
+                    .fallbackToDestructiveMigration()
+                    .build()
 
                 INSTANCE = instance
                 return instance

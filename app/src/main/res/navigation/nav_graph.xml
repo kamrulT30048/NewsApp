@@ -38,9 +38,15 @@
     <fragment
         android:id="@+id/USAFragment"
         android:name="com.kamrulhasan.topnews.fragment.USAFragment"
-        android:label="USAFragment" >
-        <action
-            android:id="@+id/action_USAFragment_to_webViewFragment2"
-            app:destination="@id/webViewFragment" />
+        android:label="USAFragment" />
+
+    <fragment
+        android:id="@+id/detailsFragment"
+        android:name="com.kamrulhasan.topnews.fragment.DetailsFragment"
+        android:label="Details News"
+        tools:layout="@layout/fragment_details" >
+        <argument
+            android:name="articleDetails"
+            app:argType="com.kamrulhasan.topnews.model.LocalArticle" />
     </fragment>
 </navigation>

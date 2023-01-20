@@ -5,10 +5,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.lifecycle.ViewModelProvider
-import com.kamrulhasan.topnews.R
 import com.kamrulhasan.topnews.databinding.FragmentSportsBinding
-import com.kamrulhasan.topnews.viewmodel.TopNewsViewModel
 
 class SportsFragment : Fragment() {
 

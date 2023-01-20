@@ -1,7 +1,8 @@
 package com.kamrulhasan.topnews.network
 
 import com.kamrulhasan.topnews.model.NewsAPI
-import com.kamrulhasan.topnews.utils.Constrains
+import com.kamrulhasan.topnews.utils.BASE_URL
+import com.kamrulhasan.topnews.utils.GET_USA_ARTICLE
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import retrofit2.Retrofit
@@ -14,12 +15,12 @@ private val moshi = Moshi.Builder()
 
 private val retrofit = Retrofit.Builder()
     .addConverterFactory(MoshiConverterFactory.create(moshi))
-    .baseUrl(Constrains.BASE_URL)
+    .baseUrl(BASE_URL)
     .build()
 
 interface NewsApiService {
 
-    @GET(Constrains.getUrl_topHeadLine)
+    @GET(GET_USA_ARTICLE)
     suspend fun getTopHeadLines() : NewsAPI
 }
 

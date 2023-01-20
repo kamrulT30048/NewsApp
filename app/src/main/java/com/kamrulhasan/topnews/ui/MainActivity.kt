@@ -3,6 +3,7 @@ package com.kamrulhasan.topnews.ui
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupActionBarWithNavController
@@ -12,6 +13,7 @@ import com.kamrulhasan.topnews.adapter.ViewPagerAdapter
 import com.kamrulhasan.topnews.databinding.ActivityMainBinding
 import com.kamrulhasan.topnews.fragment.BookMarkFragment
 import com.kamrulhasan.topnews.fragment.HomeFragment
+import com.kamrulhasan.topnews.viewmodel.TopNewsViewModel
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
@@ -48,4 +50,5 @@ class MainActivity : AppCompatActivity() {
     override fun onSupportNavigateUp(): Boolean {
         return navController.navigateUp() || super.onSupportNavigateUp()
     }
+
 }

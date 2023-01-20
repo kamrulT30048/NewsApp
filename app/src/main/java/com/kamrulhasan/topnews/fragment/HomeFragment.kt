@@ -5,14 +5,9 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.tabs.TabLayoutMediator
-import com.kamrulhasan.topnews.R
 import com.kamrulhasan.topnews.adapter.ViewPagerAdapter
 import com.kamrulhasan.topnews.databinding.FragmentHomeBinding
-import com.kamrulhasan.topnews.databinding.FragmentSportsBinding
-import com.kamrulhasan.topnews.viewmodel.TopNewsViewModel
-
 
 class HomeFragment : Fragment() {
 
@@ -37,8 +32,8 @@ class HomeFragment : Fragment() {
 
         TabLayoutMediator(binding.tabLayout, binding.viewPager){tab,position->
             when(position){
-                0 -> tab.text = "USA"
-                1 -> tab.text = "TopNews"
+                0 -> tab.text = "Top News"
+                1 -> tab.text = "USA"
                 2 -> tab.text = "Spots"
             }
         }.attach()

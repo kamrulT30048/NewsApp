@@ -9,23 +9,24 @@ import com.kamrulhasan.topnews.fragment.SportsFragment
 import com.kamrulhasan.topnews.fragment.TopNewsFragment
 import com.kamrulhasan.topnews.fragment.USAFragment
 import com.kamrulhasan.topnews.utils.Constrains
+import com.kamrulhasan.topnews.utils.VIEW_PAGER_COUNTER
 
 class ViewPagerAdapter(fragmentManager: FragmentManager, lifecycle: Lifecycle)
     :FragmentStateAdapter(fragmentManager,lifecycle) {
     override fun getItemCount(): Int {
-        return Constrains.viewPagerCount
+        return VIEW_PAGER_COUNTER
     }
 
     override fun createFragment(position: Int): Fragment {
         return when(position){
             1 -> {
-                TopNewsFragment()
+                USAFragment()
             }
             2 ->{
                 SportsFragment()
             }
             else ->{
-                USAFragment()
+                TopNewsFragment()
             }
 
         }

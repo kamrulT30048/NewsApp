@@ -1,44 +1,100 @@
 package com.kamrulhasan.topnews.viewmodel
 
+import android.app.Application
 import android.util.Log
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
-import com.kamrulhasan.topnews.model.Article
+import androidx.lifecycle.*
+import com.kamrulhasan.topnews.database.ArticleDatabase
+import com.kamrulhasan.topnews.model.BookMarkArticle
+import com.kamrulhasan.topnews.model.LocalArticle
 import com.kamrulhasan.topnews.network.NewsApi
+import com.kamrulhasan.topnews.repository.NewsRepository
+import com.kamrulhasan.topnews.utils.USA_ARTICLE
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 private const val TAG = "TopNewsViewModel"
 
-class TopNewsViewModel : ViewModel() {
+class TopNewsViewModel(application: Application) : AndroidViewModel(application) {
 
-//    private val _jsonObject = MutableLiveData<News>()
-//    val jsonObject : LiveData<News> = _jsonObject
+    var allArticle : LiveData<List<LocalArticle>>
+    var usaArticle : LiveData<List<LocalArticle>>
+    var bookmarkArticle : LiveData<List<BookMarkArticle>>
 
-    private val _jsonArray = MutableLiveData<List<Article>>()
-    val jsonArray : LiveData<List<Article>> = _jsonArray
+    val repository : NewsRepository
 
     init {
+        val article = ArticleDatabase.getDatabase(application).articleDao()
+        repository = NewsRepository(article)
+
+        allArticle = repository.readAllArticle
+        bookmarkArticle = repository.readAllBookmark
+        usaArticle = repository.readAllArticleByCategory(USA_ARTICLE)
         hitServer()
+
+//        if(allArticle.value?.isNotEmpty() == true){
+//        }
     }
 
+    //hit usa article api
+    fun hitUsaArticleAPI() {
+        getUsaArticleApi()
+    }
+
+    //hit all api
     fun hitServer(){
-        getHotHeadLine()
+        getUsaArticleApi()
     }
 
-    private fun getHotHeadLine() {
-        viewModelScope.launch {
-            try{
-                val listHotHeadLines = NewsApi.retrofitService.getTopHeadLines()
-                _jsonArray.value = listHotHeadLines.articles
-//                Log.d(TAG, "getHotHeadLine(DATA): $")
-                Log.d(TAG, "getHotHeadLine(DATA_list): ${listHotHeadLines.articles[0]}")
-                Log.d(TAG, "getHotHeadLine(DATA_list): ${listHotHeadLines.articles[3]}")
-                Log.d(TAG, "getHotHeadLine(jsonArray_list): ${jsonArray.value}")
-            }catch (e: Exception){
-                Log.d(TAG, "getHotHeadLine: $e")
+    fun readArticleById(id: String): LocalArticle? {
+        return repository.readArticleById(id)
+    }
+
+    fun addBookmarkArticle(bookMarkArticle: BookMarkArticle){
+        viewModelScope.launch(Dispatchers.IO) {
+            repository.addBookmarkArticle(bookMarkArticle)
+        }
+    }
+    fun updateArticle(localArticle: LocalArticle){
+        viewModelScope.launch(Dispatchers.IO) {
+            repository.updateArticle(localArticle)
+        }
+    }
+    fun deleteBookmarkArticle(bookMarkArticle: BookMarkArticle){
+        viewModelScope.launch(Dispatchers.IO) {
+            repository.deleteBookmarkArticle(bookMarkArticle)
+        }
+    }
+
+
+    private fun getUsaArticleApi() {
+
+        viewModelScope.launch(Dispatchers.IO) {
+
+            //get api's article
+            val articleList = NewsApi.retrofitService.getTopHeadLines().articles
+
+            try {
+                repository.deleteAllArticle(USA_ARTICLE)
+            } catch (e: Exception) {
+                Log.d(TAG, "getHotHeadLine: table is not deleted")
             }
+
+            for(article in articleList) {
+                val localArticle = LocalArticle(
+                    0,
+                    article.title,
+                    article.author,
+                    article.description,
+                    article.urlToImage,
+                    article.publishedAt,
+                    article.url,
+                    USA_ARTICLE,
+                    false
+                )
+                repository.addArticle(localArticle)
+            }
+            usaArticle = repository.readAllArticle
+//            Log.d(TAG, "getHotHeadLine: ${usaArticle.value?.get(0)}")
         }
     }
 }
