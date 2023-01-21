@@ -26,7 +26,7 @@ class DetailsFragment : Fragment() {
     private lateinit var viewModel: TopNewsViewModel
 
     private var localArticle: LocalArticle? = null
-    private var articleId: Int = 0
+//    private var articleId: Int = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -73,56 +73,59 @@ class DetailsFragment : Fragment() {
 
         binding.ivDetailsBookmark.setOnClickListener {
 ////
-//            if (localArticle?.bookmark == true) {
-//                val localArticle = LocalArticle(
-//                    localArticle?.id,
-//                    localArticle?.author,
-//                    localArticle?.title,
-//                    localArticle?.description,
-//                    localArticle?.urlToImage,
-//                    localArticle?.publishedAt,
-//                    localArticle?.url,
-//                    localArticle?.category,
-//                    false
-//                )
-//                viewModel.updateArticle(localArticle)
-//
-//                val bookmarkArticle = BookMarkArticle(
-//                    localArticle.id,
-//                    localArticle.author,
-//                    localArticle.title,
-//                    localArticle.description,
-//                    localArticle.urlToImage,
-//                    localArticle.publishedAt,
-//                    localArticle.url
-//                )
-//                viewModel.deleteBookmarkArticle(bookmarkArticle)
-//            } else {
-//                val localArticle = LocalArticle(
-//                    localArticle?.id,
-//                    localArticle?.author,
-//                    localArticle?.title,
-//                    localArticle?.description,
-//                    localArticle?.urlToImage,
-//                    localArticle?.publishedAt,
-//                    localArticle?.url,
-//                    localArticle?.category,
-//                    true
-//                )
-//                viewModel.updateArticle(localArticle)
-//
-//                // add bookmark table
-//                val bookmarkArticle = BookMarkArticle(
-//                    0,
-//                    localArticle.author,
-//                    localArticle.title,
-//                    localArticle.description,
-//                    localArticle.urlToImage,
-//                    localArticle.publishedAt,
-//                    localArticle.url
-//                )
-//                viewModel.addBookmarkArticle(bookmarkArticle)
-//            }
+            if (localArticle?.bookmark == true) {
+                val localArticle = LocalArticle(
+                    localArticle?.id!!,
+                    localArticle?.author,
+                    localArticle?.title,
+                    localArticle?.description,
+                    localArticle?.urlToImage,
+                    localArticle?.publishedAt,
+                    localArticle?.url,
+                    localArticle?.category,
+                    false
+                )
+                viewModel.updateArticle(localArticle)
+                binding.ivDetailsBookmark.setImageResource(R.drawable.icon_bookmark)
+
+                val bookmarkArticle = BookMarkArticle(
+                    localArticle.id,
+                    localArticle.author,
+                    localArticle.title,
+                    localArticle.description,
+                    localArticle.urlToImage,
+                    localArticle.publishedAt,
+                    localArticle.url,
+                    localArticle.category
+                )
+                viewModel.deleteBookmarkArticle(bookmarkArticle)
+            } else {
+                val localArticle = LocalArticle(
+                    localArticle?.id!!,
+                    localArticle?.author,
+                    localArticle?.title,
+                    localArticle?.description,
+                    localArticle?.urlToImage,
+                    localArticle?.publishedAt,
+                    localArticle?.url,
+                    localArticle?.category,
+                    true
+                )
+                viewModel.updateArticle(localArticle)
+                binding.ivDetailsBookmark.setImageResource(R.drawable.icon_bookmark_added)
+                // add bookmark table
+                val bookmarkArticle = BookMarkArticle(
+                    localArticle.id,
+                    localArticle.author,
+                    localArticle.title,
+                    localArticle.description,
+                    localArticle.urlToImage,
+                    localArticle.publishedAt,
+                    localArticle.url,
+                    localArticle.category
+                )
+                viewModel.addBookmarkArticle(bookmarkArticle)
+            }
         }
 
         binding.tvSeeMore.setOnClickListener {

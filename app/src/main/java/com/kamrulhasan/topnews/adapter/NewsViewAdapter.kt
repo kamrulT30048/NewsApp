@@ -75,38 +75,43 @@ class NewsViewAdapter(
         holder.bookmark.setOnClickListener {
 
             if(newsItem.bookmark){
-                val localArticle = LocalArticle(newsItem.id,
+                val localArticle = LocalArticle(
+                    newsItem.id,
                     newsItem.author,
                     newsItem.title,
                     newsItem.description,
                     newsItem.urlToImage,
                     newsItem.publishedAt,
                     newsItem.url,
-                    "bookmark",
+                    newsItem.category,
                     false )
                 viewModel.updateArticle(localArticle)
-                holder.bookmark.setImageResource(R.drawable.icon_bookmark)
+//                holder.bookmark.setImageResource(R.drawable.icon_bookmark)
             }else{
-                val localArticle = LocalArticle(newsItem.id,
+                val localArticle = LocalArticle(
+                    newsItem.id,
                     newsItem.author,
                     newsItem.title,
                     newsItem.description,
                     newsItem.urlToImage,
                     newsItem.publishedAt,
                     newsItem.url,
-                    "bookmark",
+                    newsItem.category,
                     true )
                 viewModel.updateArticle(localArticle)
-                holder.bookmark.setImageResource(R.drawable.icon_bookmark_added)
+//                holder.bookmark.setImageResource(R.drawable.icon_bookmark_added)
 
                 // add bookmark table
-                val bookmarkArticle = BookMarkArticle(0,
+                val bookmarkArticle = BookMarkArticle(
+                    newsItem.id,
                     newsItem.author,
                     newsItem.title,
                     newsItem.description,
                     newsItem.urlToImage,
                     newsItem.publishedAt,
-                    newsItem.url )
+                    newsItem.url,
+                    newsItem.category
+                )
                 viewModel.addBookmarkArticle(bookmarkArticle)
             }
         }

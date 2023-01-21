@@ -55,29 +55,42 @@ class BookmarkAdapter(
             .placeholder(R.drawable.ic_launcher_foreground)
             .into(holder.img)
 
-        val localArticle = LocalArticle(0,
+
+
+        holder.details.setOnClickListener {
+            // creating the instance of the bundle
+            val bundle = Bundle()
+            val localArticle = LocalArticle(
+                newsItem.id,
+                newsItem.author,
+                newsItem.title,
+                newsItem.description,
+                newsItem.urlToImage,
+                newsItem.publishedAt,
+                newsItem.url,
+                newsItem.category,
+                true
+            )
+            bundle.putParcelable(URL_KEY, localArticle)
+            //navigate to web view fragment
+            holder.itemView.findNavController().navigate(R.id.detailsFragment, bundle) //navigate(R.id.detailsFragment,newsItem)
+        }
+        val localArticle = LocalArticle(
+            newsItem.id,
             newsItem.author,
             newsItem.title,
             newsItem.description,
             newsItem.urlToImage,
             newsItem.publishedAt,
             newsItem.url,
-            "bookmark",
-            true
+            newsItem.category,
+            false
         )
-
-        holder.details.setOnClickListener {
-            // creating the instance of the bundle
-            val bundle = Bundle()
-
-            bundle.putParcelable(URL_KEY, localArticle)
-            //navigate to web view fragment
-            holder.itemView.findNavController().navigate(R.id.detailsFragment, bundle) //navigate(R.id.detailsFragment,newsItem)
-        }
 
         holder.bookmark.setOnClickListener {
             //delete data from bookmark table
             viewModel.deleteBookmarkArticle(newsItem)
+            viewModel.updateArticle(localArticle)
         }
     }
 

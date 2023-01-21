@@ -29,7 +29,7 @@ class TopNewsViewModel(application: Application) : AndroidViewModel(application)
         allArticle = repository.readAllArticle
         bookmarkArticle = repository.readAllBookmark
         usaArticle = repository.readAllArticleByCategory(USA_ARTICLE)
-        hitServer()
+//        hitServer()
 
 //        if(allArticle.value?.isNotEmpty() == true){
 //        }
@@ -91,6 +91,7 @@ class TopNewsViewModel(application: Application) : AndroidViewModel(application)
                     USA_ARTICLE,
                     false
                 )
+
                 repository.addArticle(localArticle)
             }
             usaArticle = repository.readAllArticle
