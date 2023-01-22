@@ -13,6 +13,7 @@ import com.bumptech.glide.Glide
 import com.kamrulhasan.topnews.R
 import com.kamrulhasan.topnews.model.BookMarkArticle
 import com.kamrulhasan.topnews.model.LocalArticle
+import com.kamrulhasan.topnews.utils.DateConverter
 import com.kamrulhasan.topnews.utils.URL_KEY
 import com.kamrulhasan.topnews.viewmodel.TopNewsViewModel
 
@@ -55,7 +56,7 @@ class NewsViewAdapter(
             .with(holder.itemView.context)
             .load(newsItem.urlToImage)
             .centerCrop()
-            .placeholder(R.drawable.ic_launcher_foreground)
+            .placeholder(R.drawable.icon_image_24)
             .into(holder.img)
 
         if(newsItem.bookmark){

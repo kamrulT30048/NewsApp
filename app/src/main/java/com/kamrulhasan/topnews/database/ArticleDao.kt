@@ -37,6 +37,10 @@ interface ArticleDao {
     @Query("SELECT * FROM book_mark_article_table ORDER BY publishedAt DESC")
     fun readBookmarkArticle() : LiveData<List<BookMarkArticle>>
 
+    //read all bookmark article
+    @Query("SELECT * FROM book_mark_article_table WHERE url = :url")
+    fun readBookmarkArticleByUrl(url: String) : BookMarkArticle
+
     @Query("UPDATE article_table SET bookmark = :status WHERE id = :id")
     suspend fun updateArticleStatus(id: Int, status: Boolean)
 

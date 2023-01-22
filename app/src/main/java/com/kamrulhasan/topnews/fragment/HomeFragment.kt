@@ -11,7 +11,7 @@ import com.kamrulhasan.topnews.databinding.FragmentHomeBinding
 
 class HomeFragment : Fragment() {
 
-    private var _binding : FragmentHomeBinding? = null
+    private var _binding: FragmentHomeBinding? = null
     private val binding get() = _binding!!
 
     override fun onCreateView(
@@ -27,15 +27,24 @@ class HomeFragment : Fragment() {
 
 //        val viewModel = ViewModelProvider(this)[TopNewsViewModel::class.java]
 
-        val adapter = ViewPagerAdapter(requireActivity().supportFragmentManager,lifecycle)
+        val adapter = ViewPagerAdapter(requireActivity().supportFragmentManager, lifecycle)
         binding.viewPager.adapter = adapter
 
-        TabLayoutMediator(binding.tabLayout, binding.viewPager){tab,position->
-            when(position){
-                0 -> tab.text = "Top News"
-                1 -> tab.text = "USA"
-                2 -> tab.text = "Spots"
+        TabLayoutMediator(binding.tabLayout, binding.viewPager) { tab, position ->
+            when (position) {
+                0 -> tab.text = "Top HeadLines"
+                1 -> tab.text = "Business"
+                2 -> tab.text = "Entertainment"
+                3 -> tab.text = "General"       //  "USA"
+                4 -> tab.text = "Health"
+                5 -> tab.text = "Sports"
+                6 -> tab.text = "Technology"
             }
         }.attach()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        _binding = null
     }
 }

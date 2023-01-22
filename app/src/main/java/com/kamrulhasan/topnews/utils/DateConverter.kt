@@ -23,8 +23,15 @@ class DateConverter {
 
         @SuppressLint("SimpleDateFormat")
         fun convertStringToLong(date: String): Long {
-            val df = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ")
-            return df.parse(date).time
+            val stringDate = zoneToDate(date)
+            val df = SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
+            return df.parse(stringDate)!!.time
+        }
+
+        fun zoneToDate(date: String): String {
+            val splitDate = date.split("T", "Z")
+            return splitDate[0] + " " + splitDate[1]
         }
     }
+
 }

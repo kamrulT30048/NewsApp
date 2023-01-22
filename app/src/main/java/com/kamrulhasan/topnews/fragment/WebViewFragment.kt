@@ -8,10 +8,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.webkit.WebViewClient
+import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.fragment.navArgs
 import com.kamrulhasan.topnews.databinding.FragmentWebViewBinding
 import com.kamrulhasan.topnews.utils.DEFAULT_NEWS_PAGE
 import com.kamrulhasan.topnews.utils.URL_KEY
+import com.kamrulhasan.topnews.utils.verifyAvailableNetwork
 
 private const val TAG = "WebViewFragment"
 
@@ -36,7 +38,6 @@ class WebViewFragment : Fragment() {
     ): View? {
         // Inflate the layout for this fragment
         _binding = FragmentWebViewBinding.inflate(layoutInflater)
-
         return binding.root
     }
 
@@ -47,9 +48,17 @@ class WebViewFragment : Fragment() {
         Log.d(TAG, "onViewCreated: url $webUrl")
 
         binding.webView.webViewClient = WebViewClient()
-
+        binding.webView.visibility = View.VISIBLE
         // this will load the url of the website
-        binding.webView.loadUrl(webUrl)
+        if(verifyAvailableNetwork(requireActivity() as AppCompatActivity)){
+            binding.webView.loadUrl(webUrl)
+            binding.ivCloudOff.visibility = View.GONE
+            binding.tvCloudOff.visibility = View.GONE
+        }else{
+            binding.webView.visibility = View.GONE
+            binding.ivCloudOff.visibility = View.VISIBLE
+            binding.tvCloudOff.visibility = View.VISIBLE
+        }
 
         // this will enable the javascript settings, it can also allow xss vulnerabilities
         binding.webView.settings.javaScriptEnabled = true
@@ -57,14 +66,4 @@ class WebViewFragment : Fragment() {
         // if you want to enable zoom feature
         binding.webView.settings.setSupportZoom(true)
     }
-
-//    fun onBackPressed() {
-//        // if your webview can go back it will go back
-//        if (binding.webView.canGoBack())
-//            binding.webView.goBack()
-//        // if your webview cannot go back
-//        // it will exit the application
-//        else
-//            super.onBackPressed()
-//    }
 }

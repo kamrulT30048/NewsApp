@@ -7,14 +7,20 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.kamrulhasan.topnews.R
+import com.kamrulhasan.topnews.adapter.BookmarkAdapter
 import com.kamrulhasan.topnews.adapter.NewsViewAdapter
-import com.kamrulhasan.topnews.databinding.FragmentSportsBinding
+import com.kamrulhasan.topnews.databinding.FragmentBookMarkBinding
+import com.kamrulhasan.topnews.databinding.FragmentTechnologyBinding
+import com.kamrulhasan.topnews.model.BookMarkArticle
 import com.kamrulhasan.topnews.model.LocalArticle
 import com.kamrulhasan.topnews.viewmodel.TopNewsViewModel
 
-class SportsFragment : Fragment() {
+private const val TAG = "TechnologyFragment"
 
-    private var _binding : FragmentSportsBinding? = null
+class TechnologyFragment : Fragment() {
+
+    private var _binding: FragmentTechnologyBinding? = null
     private val binding get() = _binding!!
 
     private lateinit var viewModel: TopNewsViewModel
@@ -29,8 +35,8 @@ class SportsFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        _binding = FragmentSportsBinding.inflate(layoutInflater)
-        return binding.root             //inflater.inflate(R.layout.fragment_sports, container, false)
+        _binding = FragmentTechnologyBinding.inflate(layoutInflater)
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -41,7 +47,7 @@ class SportsFragment : Fragment() {
         viewModel = ViewModelProvider(this)[TopNewsViewModel::class.java]
 
         //TODO edit livedata
-        viewModel.sportsArticle.observe(viewLifecycleOwner) {
+        viewModel.technologyArticle.observe(viewLifecycleOwner) {
             articleList = it
             tempArticleList = it
             adapter = NewsViewAdapter(requireContext(), tempArticleList, viewModel)
@@ -54,5 +60,4 @@ class SportsFragment : Fragment() {
         super.onDestroy()
         _binding = null
     }
-
 }

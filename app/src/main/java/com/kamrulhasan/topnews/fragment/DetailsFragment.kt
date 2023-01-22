@@ -6,6 +6,8 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
@@ -13,7 +15,9 @@ import com.kamrulhasan.topnews.R
 import com.kamrulhasan.topnews.databinding.FragmentDetailsBinding
 import com.kamrulhasan.topnews.model.BookMarkArticle
 import com.kamrulhasan.topnews.model.LocalArticle
+import com.kamrulhasan.topnews.utils.CHECK_INTERNET
 import com.kamrulhasan.topnews.utils.URL_KEY
+import com.kamrulhasan.topnews.utils.verifyAvailableNetwork
 import com.kamrulhasan.topnews.viewmodel.TopNewsViewModel
 
 private const val TAG = "DetailsFragment"
@@ -62,12 +66,18 @@ class DetailsFragment : Fragment() {
             binding.ivDetailsBookmark.setImageResource(R.drawable.icon_bookmark)
         }
 
-        Glide
-            .with(requireContext())
-            .load(localArticle?.urlToImage)
-            .centerCrop()
-            .placeholder(R.drawable.ic_launcher_foreground)
-            .into(binding.ivArticleImage)
+        if(verifyAvailableNetwork(requireActivity() as AppCompatActivity)){
+            Glide
+                .with(requireContext())
+                .load(localArticle?.urlToImage)
+                .centerCrop()
+                .placeholder(R.drawable.icon_image_24)
+                .into(binding.ivArticleImage)
+        }else{
+            Toast.makeText(requireContext(), CHECK_INTERNET, Toast.LENGTH_SHORT).show()
+            binding.ivArticleImage.setImageResource(R.drawable.icon_loading_buffering)
+        }
+
 
         Log.d(TAG, "onViewCreated: details: ${localArticle?.id} ")
 

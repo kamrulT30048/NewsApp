@@ -1,8 +1,7 @@
 package com.kamrulhasan.topnews.network
 
 import com.kamrulhasan.topnews.model.NewsAPI
-import com.kamrulhasan.topnews.utils.BASE_URL
-import com.kamrulhasan.topnews.utils.GET_USA_ARTICLE
+import com.kamrulhasan.topnews.utils.*
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import retrofit2.Retrofit
@@ -20,8 +19,24 @@ private val retrofit = Retrofit.Builder()
 
 interface NewsApiService {
 
-    @GET(GET_USA_ARTICLE)
-    suspend fun getTopHeadLines() : NewsAPI
+    @GET(GET_GENERAL_ARTICLE)
+    suspend fun getGeneralArticle() : NewsAPI
+
+    @GET(GET_BUSINESS_ARTICLE)
+    suspend fun getBusinessArticle() : NewsAPI
+
+    @GET(GET_ENTERTAINMENT_ARTICLE)
+    suspend fun getEntertainmentArticle() : NewsAPI
+
+    @GET(GET_HEALTH_ARTICLE)
+    suspend fun getHealthArticle() : NewsAPI
+
+    @GET(GET_SPORTS_ARTICLE)
+    suspend fun getSportsArticle() : NewsAPI
+
+    @GET(GET_TECHNOLOGY_ARTICLE)
+    suspend fun getTechnologyArticle() : NewsAPI
+
 }
 
 object NewsApi{

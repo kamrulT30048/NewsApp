@@ -13,7 +13,7 @@
     <fragment
         android:id="@+id/topNewsFragment"
         android:name="com.kamrulhasan.topnews.fragment.TopNewsFragment"
-        android:label="Top News"
+        android:label="Top Headlines"
         tools:layout="@layout/fragment_top_news" />
     <fragment
         android:id="@+id/sportsFragment"
@@ -29,24 +29,44 @@
         android:id="@+id/webViewFragment"
         android:name="com.kamrulhasan.topnews.fragment.WebViewFragment"
         android:label="News"
-        tools:layout="@layout/fragment_web_view" >
+        tools:layout="@layout/fragment_web_view">
         <argument
             android:name="newsUrl"
-            app:argType="string"
-            android:defaultValue="nothing" />
+            android:defaultValue="nothing"
+            app:argType="string" />
     </fragment>
     <fragment
-        android:id="@+id/USAFragment"
-        android:name="com.kamrulhasan.topnews.fragment.USAFragment"
-        android:label="USAFragment" />
+        android:id="@+id/generalFragment"
+        android:name="com.kamrulhasan.topnews.fragment.GeneralFragment"
+        android:label="General News" />
 
     <fragment
         android:id="@+id/detailsFragment"
         android:name="com.kamrulhasan.topnews.fragment.DetailsFragment"
-        android:label="Details News"
-        tools:layout="@layout/fragment_details" >
+        android:label="News Details"
+        tools:layout="@layout/fragment_details">
         <argument
             android:name="articleDetails"
             app:argType="com.kamrulhasan.topnews.model.LocalArticle" />
     </fragment>
+    <fragment
+        android:id="@+id/businessFragment"
+        android:name="com.kamrulhasan.topnews.fragment.BusinessFragment"
+        android:label="Business News"
+        tools:layout="@layout/fragment_business" />
+    <fragment
+        android:id="@+id/entertainmentFragment"
+        android:name="com.kamrulhasan.topnews.fragment.EntertainmentFragment"
+        android:label="Entertainment News"
+        tools:layout="@layout/fragment_entertainment" />
+    <fragment
+        android:id="@+id/healthFragment"
+        android:name="com.kamrulhasan.topnews.fragment.HealthFragment"
+        android:label="Health News"
+        tools:layout="@layout/fragment_health" />
+    <fragment
+        android:id="@+id/technologyFragment"
+        android:name="com.kamrulhasan.topnews.fragment.TechnologyFragment"
+        android:label="Technology News"
+        tools:layout="@layout/fragment_technology" />
 </navigation>

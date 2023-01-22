@@ -8,7 +8,7 @@ import com.kamrulhasan.topnews.model.BookMarkArticle
 import com.kamrulhasan.topnews.model.LocalArticle
 import com.kamrulhasan.topnews.network.NewsApi
 import com.kamrulhasan.topnews.repository.NewsRepository
-import com.kamrulhasan.topnews.utils.USA_ARTICLE
+import com.kamrulhasan.topnews.utils.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
@@ -17,7 +17,12 @@ private const val TAG = "TopNewsViewModel"
 class TopNewsViewModel(application: Application) : AndroidViewModel(application) {
 
     var allArticle : LiveData<List<LocalArticle>>
-    var usaArticle : LiveData<List<LocalArticle>>
+    var generalArticle : LiveData<List<LocalArticle>>
+    var businessArticle : LiveData<List<LocalArticle>>
+    var entertainmentArticle : LiveData<List<LocalArticle>>
+    var sportsArticle : LiveData<List<LocalArticle>>
+    var healthArticle : LiveData<List<LocalArticle>>
+    var technologyArticle : LiveData<List<LocalArticle>>
     var bookmarkArticle : LiveData<List<BookMarkArticle>>
 
     val repository : NewsRepository
@@ -28,21 +33,50 @@ class TopNewsViewModel(application: Application) : AndroidViewModel(application)
 
         allArticle = repository.readAllArticle
         bookmarkArticle = repository.readAllBookmark
-        usaArticle = repository.readAllArticleByCategory(USA_ARTICLE)
+        generalArticle = repository.readAllArticleByCategory(GENERAL_ARTICLE)
+        businessArticle = repository.readAllArticleByCategory(BUSINESS_ARTICLE)
+        entertainmentArticle = repository.readAllArticleByCategory(ENTERTAINMENT_ARTICLE)
+        sportsArticle = repository.readAllArticleByCategory(SPORTS_ARTICLE)
+        healthArticle = repository.readAllArticleByCategory(HEALTH_ARTICLE)
+        technologyArticle = repository.readAllArticleByCategory(TECHNOLOGY_ARTICLE)
+
 //        hitServer()
 
-//        if(allArticle.value?.isNotEmpty() == true){
-//        }
     }
 
-    //hit usa article api
-    fun hitUsaArticleAPI() {
-        getUsaArticleApi()
+    //hit general article api
+    fun hitGeneralArticleAPI() {
+        getGeneralArticleApi()
+    }
+    //hit business article api
+    fun hitBusinessArticleAPI() {
+        getBusinessArticleApi()
+    }
+    //hit sports article api
+    fun hitSportArticleAPI() {
+        getSportsArticleApi()
+    }
+    //hit health article api
+    fun hitHealthArticleAPI() {
+        getHealthArticleApi()
+    }
+    //hit entertainment article api
+    fun hitEntertainmentArticleAPI() {
+        getEntertainmentArticleApi()
+    }
+    //hit technology article api
+    fun hitTechnologyArticleAPI() {
+        getTechnologyArticleApi()
     }
 
     //hit all api
     fun hitServer(){
-        getUsaArticleApi()
+        getGeneralArticleApi()
+        getBusinessArticleApi()
+        getTechnologyArticleApi()
+        getEntertainmentArticleApi()
+        getHealthArticleApi()
+        getSportsArticleApi()
     }
 
     fun readArticleById(id: String): LocalArticle? {
@@ -66,36 +100,200 @@ class TopNewsViewModel(application: Application) : AndroidViewModel(application)
     }
 
 
-    private fun getUsaArticleApi() {
+    private fun getGeneralArticleApi() {
 
         viewModelScope.launch(Dispatchers.IO) {
-
             //get api's article
-            val articleList = NewsApi.retrofitService.getTopHeadLines().articles
+            val articleList = NewsApi.retrofitService.getGeneralArticle().articles
 
             try {
-                repository.deleteAllArticle(USA_ARTICLE)
+                repository.deleteAllArticle(GENERAL_ARTICLE)
             } catch (e: Exception) {
                 Log.d(TAG, "getHotHeadLine: table is not deleted")
             }
 
             for(article in articleList) {
+                var bookmark = false
+
                 val localArticle = LocalArticle(
                     0,
                     article.title,
                     article.author,
                     article.description,
                     article.urlToImage,
-                    article.publishedAt,
+                    article.publishedAt?.let { DateConverter.zoneToDate(it) },
                     article.url,
-                    USA_ARTICLE,
-                    false
+                    GENERAL_ARTICLE,
+                    bookmark
                 )
 
                 repository.addArticle(localArticle)
             }
-            usaArticle = repository.readAllArticle
-//            Log.d(TAG, "getHotHeadLine: ${usaArticle.value?.get(0)}")
+            generalArticle = repository.readAllArticleByCategory(GENERAL_ARTICLE)
         }
     }
+    private fun getBusinessArticleApi() {
+
+        viewModelScope.launch(Dispatchers.IO) {
+            //get api's article
+            val articleList = NewsApi.retrofitService.getBusinessArticle().articles
+
+            try {
+                repository.deleteAllArticle(BUSINESS_ARTICLE)
+            } catch (e: Exception) {
+                Log.d(TAG, "getHotHeadLine: table is not deleted")
+            }
+
+            for(article in articleList) {
+                var bookmark = false
+
+                val localArticle = LocalArticle(
+                    0,
+                    article.title,
+                    article.author,
+                    article.description,
+                    article.urlToImage,
+                    article.publishedAt?.let { DateConverter.zoneToDate(it) },
+                    article.url,
+                    BUSINESS_ARTICLE,
+                    bookmark
+                )
+
+                repository.addArticle(localArticle)
+            }
+            businessArticle = repository.readAllArticleByCategory(BUSINESS_ARTICLE)
+        }
+    }
+    private fun getSportsArticleApi() {
+
+        viewModelScope.launch(Dispatchers.IO) {
+            //get api's article
+            val articleList = NewsApi.retrofitService.getSportsArticle().articles
+
+            try {
+                repository.deleteAllArticle(SPORTS_ARTICLE)
+            } catch (e: Exception) {
+                Log.d(TAG, "getHotHeadLine: table is not deleted")
+            }
+
+            for(article in articleList) {
+                var bookmark = false
+
+                val localArticle = LocalArticle(
+                    0,
+                    article.title,
+                    article.author,
+                    article.description,
+                    article.urlToImage,
+                    article.publishedAt?.let { DateConverter.zoneToDate(it) },
+                    article.url,
+                    SPORTS_ARTICLE,
+                    bookmark
+                )
+
+                repository.addArticle(localArticle)
+            }
+            sportsArticle = repository.readAllArticleByCategory(SPORTS_ARTICLE)
+        }
+    }
+
+    private fun getHealthArticleApi() {
+
+        viewModelScope.launch(Dispatchers.IO) {
+            //get api's article
+            val articleList = NewsApi.retrofitService.getHealthArticle().articles
+
+            try {
+                repository.deleteAllArticle(HEALTH_ARTICLE)
+            } catch (e: Exception) {
+                Log.d(TAG, "getHotHeadLine: table is not deleted")
+            }
+
+            for(article in articleList) {
+                var bookmark = false
+
+                val localArticle = LocalArticle(
+                    0,
+                    article.title,
+                    article.author,
+                    article.description,
+                    article.urlToImage,
+                    article.publishedAt?.let { DateConverter.zoneToDate(it) },
+                    article.url,
+                    HEALTH_ARTICLE,
+                    bookmark
+                )
+
+                repository.addArticle(localArticle)
+            }
+            healthArticle = repository.readAllArticleByCategory(HEALTH_ARTICLE)
+        }
+    }
+
+    private fun getEntertainmentArticleApi() {
+
+        viewModelScope.launch(Dispatchers.IO) {
+            //get api's article
+            val articleList = NewsApi.retrofitService.getEntertainmentArticle().articles
+
+            try {
+                repository.deleteAllArticle(ENTERTAINMENT_ARTICLE)
+            } catch (e: Exception) {
+                Log.d(TAG, "getHotHeadLine: table is not deleted")
+            }
+
+            for(article in articleList) {
+                var bookmark = false
+
+                val localArticle = LocalArticle(
+                    0,
+                    article.title,
+                    article.author,
+                    article.description,
+                    article.urlToImage,
+                    article.publishedAt?.let { DateConverter.zoneToDate(it) },
+                    article.url,
+                    ENTERTAINMENT_ARTICLE,
+                    bookmark
+                )
+
+                repository.addArticle(localArticle)
+            }
+            entertainmentArticle = repository.readAllArticleByCategory(ENTERTAINMENT_ARTICLE)
+        }
+    }
+
+    private fun getTechnologyArticleApi() {
+
+        viewModelScope.launch(Dispatchers.IO) {
+            //get api's article
+            val articleList = NewsApi.retrofitService.getTechnologyArticle().articles
+
+            try {
+                repository.deleteAllArticle(TECHNOLOGY_ARTICLE)
+            } catch (e: Exception) {
+                Log.d(TAG, "getHotHeadLine: table is not deleted")
+            }
+
+            for(article in articleList) {
+                var bookmark = false
+
+                val localArticle = LocalArticle(
+                    0,
+                    article.title,
+                    article.author,
+                    article.description,
+                    article.urlToImage,
+                    article.publishedAt?.let { DateConverter.zoneToDate(it) },
+                    article.url,
+                    TECHNOLOGY_ARTICLE,
+                    bookmark
+                )
+
+                repository.addArticle(localArticle)
+            }
+            technologyArticle = repository.readAllArticleByCategory(TECHNOLOGY_ARTICLE)
+        }
+    }
+
 }

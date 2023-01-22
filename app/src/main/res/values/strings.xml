@@ -8,4 +8,11 @@
     <string name="yyyy_mm_dd_hh_mm">YYYY-MM-DD HH:MM</string>
     <string name="article_title">Article Title</string>
     <string name="read_more">Read More...</string>
+    <string name="search">Search</string>
+    <string name="no_item_saved_in_bookmark">No Item Saved in Bookmark</string>
+    <string name="no_item_saved_in_business_category">No Item Saved in Business Category!!</string>
+    <string name="no_item_saved_in_technology_category">No Item Saved in Technology Category</string>
+    <string name="no_item_saved_in_sports_category">No Item Saved in Sports Category</string>
+    <string name="no_item_saved_in_this_category">No Item Saved in this Category</string>
+    <string name="please_check_your_internet_connection">Please Check Your Internet Connection.!!</string>
 </resources>

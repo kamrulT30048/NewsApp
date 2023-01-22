@@ -8,6 +8,7 @@ import com.kamrulhasan.topnews.model.LocalArticle
 class NewsRepository(private val articleDao: ArticleDao) {
     //read all local article
     val readAllArticle: LiveData<List<LocalArticle>> = articleDao.readAllArticle()
+
     //read all bookmark article
     val readAllBookmark : LiveData<List<BookMarkArticle>>  = articleDao.readBookmarkArticle()
 
@@ -19,6 +20,11 @@ class NewsRepository(private val articleDao: ArticleDao) {
     //read article by id
     fun readArticleById(id: String): LocalArticle? {
         return articleDao.readArticleById(id).value
+    }
+
+    //read bookmark by url
+    fun readBookmarkByUrl(url: String): BookMarkArticle{
+        return  articleDao.readBookmarkArticleByUrl(url)
     }
 
     //add one row
