@@ -1,6 +1,5 @@
 package com.kamrulhasan.topnews.adapter
 
-import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -13,39 +12,33 @@ import com.bumptech.glide.Glide
 import com.kamrulhasan.topnews.R
 import com.kamrulhasan.topnews.model.BookMarkArticle
 import com.kamrulhasan.topnews.model.LocalArticle
-import com.kamrulhasan.topnews.utils.DateConverter
+import com.kamrulhasan.topnews.utils.MyApplication
 import com.kamrulhasan.topnews.utils.URL_KEY
 import com.kamrulhasan.topnews.viewmodel.TopNewsViewModel
 
-private const val TAG = "NewsViewAdapter"
-
 class NewsViewAdapter(
-    private val context: Context,
     private val newsList: List<LocalArticle>,
     private val viewModel: TopNewsViewModel
-): RecyclerView.Adapter<NewsViewAdapter.NewsViewHolder>() {
+) : RecyclerView.Adapter<NewsViewAdapter.NewsViewHolder>() {
 
-//    val viewModel = ViewModelProvider()[TopNewsViewModel::class.java]
+    class NewsViewHolder(binding: View) : RecyclerView.ViewHolder(binding.rootView) {
 
-    class NewsViewHolder(binding: View) : RecyclerView.ViewHolder(binding.rootView){
-
-        val publishedDate = binding.findViewById<TextView>(R.id.tv_publish_date)
-        val title = binding.findViewById<TextView>(R.id.tv_news_title)
-        val desc = binding.findViewById<TextView>(R.id.tv_news_description)
-        val img = binding.findViewById<ImageView>(R.id.iv_news_photo)
-        val bookmark = binding.findViewById<ImageView>(R.id.iv_bookmark)
-        val details = binding.findViewById<TextView>(R.id.tv_see_more)
+        val publishedDate: TextView = binding.findViewById(R.id.tv_publish_date)
+        val title: TextView = binding.findViewById(R.id.tv_news_title)
+        val desc: TextView = binding.findViewById(R.id.tv_news_description)
+        val img: ImageView = binding.findViewById(R.id.iv_news_photo)
+        val bookmark: ImageView = binding.findViewById(R.id.iv_bookmark)
+        val details: TextView = binding.findViewById(R.id.tv_see_more)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): NewsViewHolder {
-        val view = LayoutInflater.from(context).inflate(R.layout.item_news, parent, false)
+        val view = LayoutInflater.from(MyApplication.appContext).inflate(R.layout.item_news, parent, false)
         return NewsViewHolder(view)
     }
 
     override fun onBindViewHolder(holder: NewsViewHolder, position: Int) {
 
         val newsItem = newsList[position]
-//        val viewModel = ViewModelProvider(holder.itemView.context)[TopNewsViewModel::class.java]
 
         holder.publishedDate.text = newsItem.publishedAt
         holder.title.text = newsItem.title
@@ -56,55 +49,31 @@ class NewsViewAdapter(
             .with(holder.itemView.context)
             .load(newsItem.urlToImage)
             .centerCrop()
-            .placeholder(R.drawable.icon_image_24)
+            .placeholder(R.drawable.icon_loading)
             .into(holder.img)
 
-        if(newsItem.bookmark){
+        if (newsItem.bookmark) {
             holder.bookmark.setImageResource(R.drawable.icon_bookmark_added)
-        }else{
+        } else {
             holder.bookmark.setImageResource(R.drawable.icon_bookmark)
         }
 
         holder.details.setOnClickListener {
             val bundle = Bundle()
             bundle.putParcelable(URL_KEY, newsItem)
-//            Toast.makeText(holder.itemView.context, "id ${newsItem.id}", Toast.LENGTH_SHORT).show()
             //navigate to web view fragment
-            holder.itemView.findNavController().navigate(R.id.detailsFragment, bundle) //navigate(R.id.detailsFragment,newsItem)
+            holder.itemView.findNavController().navigate(R.id.detailsFragment, bundle)
         }
 
         holder.bookmark.setOnClickListener {
-
-            if(newsItem.bookmark){
-                val localArticle = LocalArticle(
-                    newsItem.id,
-                    newsItem.author,
-                    newsItem.title,
-                    newsItem.description,
-                    newsItem.urlToImage,
-                    newsItem.publishedAt,
-                    newsItem.url,
-                    newsItem.category,
-                    false )
-                viewModel.updateArticle(localArticle)
-//                holder.bookmark.setImageResource(R.drawable.icon_bookmark)
-            }else{
-                val localArticle = LocalArticle(
-                    newsItem.id,
-                    newsItem.author,
-                    newsItem.title,
-                    newsItem.description,
-                    newsItem.urlToImage,
-                    newsItem.publishedAt,
-                    newsItem.url,
-                    newsItem.category,
-                    true )
-                viewModel.updateArticle(localArticle)
-//                holder.bookmark.setImageResource(R.drawable.icon_bookmark_added)
+            val localUrl = newsItem.url
+            if (newsItem.bookmark) {
+                viewModel.updateArticle(localUrl, false)
+            } else {
+                viewModel.updateArticle(localUrl, true)
 
                 // add bookmark table
                 val bookmarkArticle = BookMarkArticle(
-                    newsItem.id,
                     newsItem.author,
                     newsItem.title,
                     newsItem.description,

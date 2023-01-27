@@ -1,24 +1,26 @@
 package com.kamrulhasan.topnews.fragment
 
-import android.annotation.SuppressLint
+import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import android.view.*
+import android.view.inputmethod.InputMethodManager
 import androidx.appcompat.widget.SearchView
+import androidx.core.content.ContextCompat.getSystemService
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.viewmodel.CreationExtras
-import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.kamrulhasan.topnews.R
 import com.kamrulhasan.topnews.adapter.BookmarkAdapter
-import com.kamrulhasan.topnews.adapter.NewsViewAdapter
 import com.kamrulhasan.topnews.databinding.FragmentBookMarkBinding
-import com.kamrulhasan.topnews.databinding.FragmentTopNewsBinding
 import com.kamrulhasan.topnews.model.BookMarkArticle
-import com.kamrulhasan.topnews.model.LocalArticle
+import com.kamrulhasan.topnews.utils.MyApplication
 import com.kamrulhasan.topnews.viewmodel.TopNewsViewModel
 import java.util.*
 
-class BookMarkFragment : Fragment(), SearchView.OnQueryTextListener {
+private const val TAG = "BookMarkFragment"
+
+class BookMarkFragment : Fragment() {
     private var _binding: FragmentBookMarkBinding? = null
     private val binding get() = _binding!!
 
@@ -29,10 +31,16 @@ class BookMarkFragment : Fragment(), SearchView.OnQueryTextListener {
     private var tempArticleList = emptyList<BookMarkArticle>()
     private var tempArticleMutableList = mutableListOf<BookMarkArticle>()
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setHasOptionsMenu(true)
+        Log.d(TAG, "onCreate: bookmark")
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         // Inflate the layout for this fragment
         _binding = FragmentBookMarkBinding.inflate(layoutInflater)
         return binding.root
@@ -40,60 +48,74 @@ class BookMarkFragment : Fragment(), SearchView.OnQueryTextListener {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        setHasOptionsMenu(true)
-
         viewModel = ViewModelProvider(this)[TopNewsViewModel::class.java]
 
         viewModel.bookmarkArticle.observe(viewLifecycleOwner) {
             articleList = it
             tempArticleList = it
-            adapter = BookmarkAdapter(requireContext(), tempArticleList, viewModel)
+            adapter = BookmarkAdapter(tempArticleList, viewModel)
             binding.recyclerView.adapter = adapter
-//            binding.recyclerView.layoutManager = LinearLayoutManager(requireContext())
-        }
 
+            if (articleList.isNotEmpty()) {
+                binding.tvNoItem.visibility = View.GONE
+            } else {
+                binding.tvNoItem.visibility = View.VISIBLE
+            }
+        }
     }
 
+    /// search menu
     @Deprecated("Deprecated in Java")
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        menu.clear()
         inflater.inflate(R.menu.search_menu, menu)
-        val item = menu?.findItem(R.id.search_menu)
-        val searchView = item?.actionView as SearchView
-        searchView.setOnQueryTextListener(this)
+        val search = menu.findItem(R.id.search_menu_item)
+        val searchView = search?.actionView as SearchView
+        searchView.queryHint = "Search"
+        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                searchArticle(query.toString())
+                return true
+            }
+
+            override fun onQueryTextChange(newText: String?): Boolean {
+                searchArticle(newText.toString())
+                return true
+            }
+        })
     }
 
-    override fun onQueryTextSubmit(query: String?): Boolean {
-        return false
-    }
-
-    @SuppressLint("NotifyDataSetChanged")
-    override fun onQueryTextChange(newText: String?): Boolean {
+    /// search article with search menu
+    private fun searchArticle(text: String) {
         tempArticleMutableList.clear()
-        val searchText = newText!!.toLowerCase(Locale.getDefault())
-        if (searchText.isNotEmpty()) {
+
+//        val imm = MyApplication.appContext.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+
+//        if(imm.isActive){
+//            requireActivity().findViewById<BottomNavigationView>(R.id.bottom_nav_bar)
+//                .visibility = View.GONE
+//        }
+
+        val searchText = text.toLowerCase(Locale.getDefault())
+        tempArticleList = if (searchText.isNotEmpty()) {
             articleList.forEach {
                 if (it.title?.toLowerCase(Locale.getDefault())?.contains(searchText) == true) {
                     tempArticleMutableList.add(it)
                 }
             }
-            tempArticleList = tempArticleMutableList
-//            binding.recyclerView.adapter?.notifyDataSetChanged()
-            adapter = BookmarkAdapter(requireContext(), tempArticleList, viewModel)
-            binding.recyclerView.adapter = adapter
-//            binding.recyclerView.layoutManager = LinearLayoutManager(requireContext())
-
+            tempArticleMutableList
         } else {
-            tempArticleList = articleList
-            adapter = BookmarkAdapter(requireContext(), tempArticleList, viewModel)
-            binding.recyclerView.adapter = adapter
-            binding.recyclerView.layoutManager = LinearLayoutManager(requireContext())
+            articleList
         }
-        return true
+        adapter = BookmarkAdapter(tempArticleList, viewModel)
+        binding.recyclerView.adapter = adapter
     }
 
     override fun onDestroy() {
         super.onDestroy()
-        _binding = null
+
+//        requireActivity().findViewById<BottomNavigationView>(R.id.bottom_nav_bar)
+//            .visibility = View.VISIBLE
+//        _binding = null
     }
 }

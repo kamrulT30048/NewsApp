@@ -1,10 +1,8 @@
 package com.kamrulhasan.topnews.fragment
 
 import android.os.Bundle
+import android.view.*
 import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import com.google.android.material.tabs.TabLayoutMediator
 import com.kamrulhasan.topnews.adapter.ViewPagerAdapter
 import com.kamrulhasan.topnews.databinding.FragmentHomeBinding
@@ -17,7 +15,7 @@ class HomeFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         _binding = FragmentHomeBinding.inflate(layoutInflater)
         return binding.root
     }
@@ -25,9 +23,7 @@ class HomeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-//        val viewModel = ViewModelProvider(this)[TopNewsViewModel::class.java]
-
-        val adapter = ViewPagerAdapter(requireActivity().supportFragmentManager, lifecycle)
+        val adapter = ViewPagerAdapter(childFragmentManager, lifecycle)
         binding.viewPager.adapter = adapter
 
         TabLayoutMediator(binding.tabLayout, binding.viewPager) { tab, position ->
@@ -35,7 +31,7 @@ class HomeFragment : Fragment() {
                 0 -> tab.text = "Top HeadLines"
                 1 -> tab.text = "Business"
                 2 -> tab.text = "Entertainment"
-                3 -> tab.text = "General"       //  "USA"
+                3 -> tab.text = "General"
                 4 -> tab.text = "Health"
                 5 -> tab.text = "Sports"
                 6 -> tab.text = "Technology"
@@ -43,8 +39,8 @@ class HomeFragment : Fragment() {
         }.attach()
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
+    override fun onDestroyView() {
+        super.onDestroyView()
         _binding = null
     }
 }

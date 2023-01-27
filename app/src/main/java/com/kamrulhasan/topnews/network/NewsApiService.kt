@@ -20,25 +20,25 @@ private val retrofit = Retrofit.Builder()
 interface NewsApiService {
 
     @GET(GET_GENERAL_ARTICLE)
-    suspend fun getGeneralArticle() : NewsAPI
+    suspend fun getGeneralArticle(): NewsAPI
 
     @GET(GET_BUSINESS_ARTICLE)
-    suspend fun getBusinessArticle() : NewsAPI
+    suspend fun getBusinessArticle(): NewsAPI
 
     @GET(GET_ENTERTAINMENT_ARTICLE)
-    suspend fun getEntertainmentArticle() : NewsAPI
+    suspend fun getEntertainmentArticle(): NewsAPI
 
     @GET(GET_HEALTH_ARTICLE)
-    suspend fun getHealthArticle() : NewsAPI
+    suspend fun getHealthArticle(): NewsAPI
 
     @GET(GET_SPORTS_ARTICLE)
-    suspend fun getSportsArticle() : NewsAPI
+    suspend fun getSportsArticle(): NewsAPI
 
     @GET(GET_TECHNOLOGY_ARTICLE)
-    suspend fun getTechnologyArticle() : NewsAPI
+    suspend fun getTechnologyArticle(): NewsAPI
 
 }
 
-object NewsApi{
+object NewsApi {
     val retrofitService: NewsApiService by lazy { retrofit.create(NewsApiService::class.java) }
 }

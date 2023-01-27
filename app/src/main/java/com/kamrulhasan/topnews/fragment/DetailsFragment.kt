@@ -1,7 +1,6 @@
 package com.kamrulhasan.topnews.fragment
 
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -20,17 +19,13 @@ import com.kamrulhasan.topnews.utils.URL_KEY
 import com.kamrulhasan.topnews.utils.verifyAvailableNetwork
 import com.kamrulhasan.topnews.viewmodel.TopNewsViewModel
 
-private const val TAG = "DetailsFragment"
-
 class DetailsFragment : Fragment() {
 
     private var _binding: FragmentDetailsBinding? = null
     private val binding get() = _binding!!
 
     private lateinit var viewModel: TopNewsViewModel
-
     private var localArticle: LocalArticle? = null
-//    private var articleId: Int = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -43,7 +38,7 @@ class DetailsFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         _binding = FragmentDetailsBinding.inflate(layoutInflater)
         return binding.root
     }
@@ -53,86 +48,61 @@ class DetailsFragment : Fragment() {
 
         viewModel = ViewModelProvider(this)[TopNewsViewModel::class.java]
 
-//        localArticle = viewModel.readArticleById(articleId.toString())
-
         binding.tvDetailsTitle.text = localArticle?.title
         binding.tvAuthor.text = localArticle?.author
         binding.tvDetailsDescription.text = localArticle?.description
         binding.tvDetailsPublishedAt.text = localArticle?.publishedAt
 
+        //check bookmark
         if (localArticle?.bookmark == true) {
             binding.ivDetailsBookmark.setImageResource(R.drawable.icon_bookmark_added)
         } else {
             binding.ivDetailsBookmark.setImageResource(R.drawable.icon_bookmark)
         }
 
-        if(verifyAvailableNetwork(requireActivity() as AppCompatActivity)){
+        //load image
+        if (verifyAvailableNetwork(requireActivity() as AppCompatActivity)) {
             Glide
                 .with(requireContext())
                 .load(localArticle?.urlToImage)
                 .centerCrop()
-                .placeholder(R.drawable.icon_image_24)
+                .placeholder(R.drawable.icon_loading)
                 .into(binding.ivArticleImage)
-        }else{
+        } else {
             Toast.makeText(requireContext(), CHECK_INTERNET, Toast.LENGTH_SHORT).show()
-            binding.ivArticleImage.setImageResource(R.drawable.icon_loading_buffering)
+            binding.ivArticleImage.setImageResource(R.drawable.icon_loading)
         }
 
-
-        Log.d(TAG, "onViewCreated: details: ${localArticle?.id} ")
-
         binding.ivDetailsBookmark.setOnClickListener {
-////
+
+            val localUrl = localArticle?.url.toString()
             if (localArticle?.bookmark == true) {
-                val localArticle = LocalArticle(
-                    localArticle?.id!!,
+
+                viewModel.updateArticle(localUrl, false)
+                binding.ivDetailsBookmark.setImageResource(R.drawable.icon_bookmark)
+                val bookmarkArticle = BookMarkArticle(
                     localArticle?.author,
                     localArticle?.title,
                     localArticle?.description,
                     localArticle?.urlToImage,
                     localArticle?.publishedAt,
-                    localArticle?.url,
-                    localArticle?.category,
-                    false
-                )
-                viewModel.updateArticle(localArticle)
-                binding.ivDetailsBookmark.setImageResource(R.drawable.icon_bookmark)
-
-                val bookmarkArticle = BookMarkArticle(
-                    localArticle.id,
-                    localArticle.author,
-                    localArticle.title,
-                    localArticle.description,
-                    localArticle.urlToImage,
-                    localArticle.publishedAt,
-                    localArticle.url,
-                    localArticle.category
+                    localArticle!!.url,
+                    localArticle?.category
                 )
                 viewModel.deleteBookmarkArticle(bookmarkArticle)
+
             } else {
-                val localArticle = LocalArticle(
-                    localArticle?.id!!,
-                    localArticle?.author,
-                    localArticle?.title,
-                    localArticle?.description,
-                    localArticle?.urlToImage,
-                    localArticle?.publishedAt,
-                    localArticle?.url,
-                    localArticle?.category,
-                    true
-                )
-                viewModel.updateArticle(localArticle)
+                viewModel.updateArticle(localUrl, true)
                 binding.ivDetailsBookmark.setImageResource(R.drawable.icon_bookmark_added)
                 // add bookmark table
                 val bookmarkArticle = BookMarkArticle(
-                    localArticle.id,
-                    localArticle.author,
-                    localArticle.title,
-                    localArticle.description,
-                    localArticle.urlToImage,
-                    localArticle.publishedAt,
-                    localArticle.url,
-                    localArticle.category
+                    localArticle?.author,
+                    localArticle?.title,
+                    localArticle?.description,
+                    localArticle?.urlToImage,
+                    localArticle?.publishedAt,
+                    localArticle!!.url,
+                    localArticle?.category
                 )
                 viewModel.addBookmarkArticle(bookmarkArticle)
             }

@@ -21,33 +21,27 @@ interface ArticleDao {
 
     ////  Read Article  \\\\
     // read all data from local article
-    @Query("SELECT * FROM article_table")
-    fun readAllArticle() : LiveData<List<LocalArticle>>
+    @Query("SELECT * FROM article_table ORDER BY publishedAt DESC")
+    fun readAllArticle(): LiveData<List<LocalArticle>>
 
     // read all data from particular category
-    @Query("SELECT * FROM article_table WHERE category = :articleCategory")
-    fun readAllArticleByCategory(articleCategory: String) : LiveData<List<LocalArticle>>
-
-    // read article from particular id
-    @Query("SELECT * FROM article_table WHERE id = :id")
-    fun readArticleById(id : String) : LiveData<LocalArticle>
+    @Query("SELECT * FROM article_table WHERE category = :articleCategory ORDER BY publishedAt DESC")
+    fun readAllArticleByCategory(articleCategory: String): LiveData<List<LocalArticle>>
 
     /////  Read BookMark  \\\\\
     //read all bookmark article
     @Query("SELECT * FROM book_mark_article_table ORDER BY publishedAt DESC")
-    fun readBookmarkArticle() : LiveData<List<BookMarkArticle>>
+    fun readBookmarkArticle(): LiveData<List<BookMarkArticle>>
 
     //read all bookmark article
     @Query("SELECT * FROM book_mark_article_table WHERE url = :url")
-    fun readBookmarkArticleByUrl(url: String) : BookMarkArticle
+    fun readBookmarkArticleByUrl(url: String): BookMarkArticle
 
-    @Query("UPDATE article_table SET bookmark = :status WHERE id = :id")
-    suspend fun updateArticleStatus(id: Int, status: Boolean)
+    @Query("UPDATE article_table SET bookmark = :status WHERE url = :url")
+    suspend fun updateArticleStatus(url: String, status: Boolean)
 
     @Update
     suspend fun updateLocalArticle(localArticle: LocalArticle)
-//
-    //fun readBookmarkArticle() : LiveData<List<BookMarkArticle>>
 
     @Delete
     suspend fun deleteArticle(localArticle: LocalArticle)
@@ -55,8 +49,11 @@ interface ArticleDao {
     @Delete
     suspend fun deleteBookMarkArticle(bookMarkArticle: BookMarkArticle)
 
-    @Query("DELETE FROM article_table WHERE category = :articleCategory")
-    suspend fun deleteAllArticle(articleCategory: String)
+    @Query("DELETE FROM article_table WHERE category = :articleCategory AND bookmark = :notBookmark")
+    suspend fun deleteAllArticleByCategory(articleCategory: String, notBookmark: Boolean)
+
+    @Query("DELETE FROM article_table WHERE bookmark = :notBookmark")
+    suspend fun deleteAllArticle(notBookmark: Boolean)
 
     @Query("DELETE FROM book_mark_article_table")
     suspend fun deleteAllBookmarkArticle()

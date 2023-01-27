@@ -41,7 +41,7 @@
                 android:layout_width="0dp"
                 android:layout_height="250dp"
                 android:layout_marginTop="5dp"
-                android:src="@drawable/icon_loading_buffering"
+                android:src="@drawable/icon_loading"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tv_author" />
@@ -58,24 +58,25 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/iv_details_bookmark" />
+
             <TextView
+                android:id="@+id/tv_author"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/tv_author"
-                app:layout_constraintTop_toBottomOf="@id/tv_details_title"
+                android:text="Author"
                 app:layout_constraintStart_toStartOf="parent"
-                android:text="Author"/>
+                app:layout_constraintTop_toBottomOf="@id/tv_details_title" />
 
             <TextView
                 android:id="@+id/tv_details_description"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
+                android:layout_marginBottom="30dp"
                 android:justificationMode="inter_word"
                 android:text="Article Description"
                 android:textColor="@color/black"
                 android:textSize="20sp"
-                android:layout_marginBottom="30dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/iv_article_image" />
@@ -84,11 +85,15 @@
                 android:id="@+id/tv_see_more"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:clipToPadding="false"
+                android:paddingBottom="50dp"
                 android:text="@string/read_more"
-                android:textColor="@color/black"
-                android:layout_marginBottom="0dp"
+                android:textColor="@color/purple_700"
+                android:textSize="18sp"
+                android:textStyle="bold"
                 app:layout_constraintEnd_toEndOf="@id/tv_details_description"
-                app:layout_constraintBottom_toBottomOf="@id/tv_details_description" />
+                app:layout_constraintTop_toBottomOf="@id/tv_details_description" />
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>

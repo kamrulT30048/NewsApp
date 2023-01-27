@@ -8,14 +8,13 @@ import kotlinx.android.parcel.Parcelize
 @Parcelize
 @Entity(tableName = "article_table")
 data class LocalArticle(
-    @PrimaryKey(autoGenerate = true)
-    val id: Int,
     val author: String?,
     val title: String?,
     val description: String?,
     val urlToImage: String?,
     val publishedAt: String?,
-    val url: String?,
+    @PrimaryKey
+    val url: String,
     val category: String?,
     val bookmark: Boolean
 ):Parcelable

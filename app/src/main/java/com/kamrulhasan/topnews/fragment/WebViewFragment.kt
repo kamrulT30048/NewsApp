@@ -9,7 +9,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.webkit.WebViewClient
 import androidx.appcompat.app.AppCompatActivity
-import androidx.navigation.fragment.navArgs
+import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.kamrulhasan.topnews.R
 import com.kamrulhasan.topnews.databinding.FragmentWebViewBinding
 import com.kamrulhasan.topnews.utils.DEFAULT_NEWS_PAGE
 import com.kamrulhasan.topnews.utils.URL_KEY
@@ -19,7 +20,7 @@ private const val TAG = "WebViewFragment"
 
 class WebViewFragment : Fragment() {
 
-    private var _binding : FragmentWebViewBinding? = null
+    private var _binding: FragmentWebViewBinding? = null
     private val binding get() = _binding!!
 
     private lateinit var webUrl: String
@@ -35,7 +36,7 @@ class WebViewFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         // Inflate the layout for this fragment
         _binding = FragmentWebViewBinding.inflate(layoutInflater)
         return binding.root
@@ -45,16 +46,19 @@ class WebViewFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        // hide bottom nav bar
+        requireActivity().findViewById<BottomNavigationView>(R.id.bottom_nav_bar).visibility = View.GONE
+
         Log.d(TAG, "onViewCreated: url $webUrl")
 
         binding.webView.webViewClient = WebViewClient()
         binding.webView.visibility = View.VISIBLE
         // this will load the url of the website
-        if(verifyAvailableNetwork(requireActivity() as AppCompatActivity)){
+        if (verifyAvailableNetwork(requireActivity() as AppCompatActivity)) {
             binding.webView.loadUrl(webUrl)
             binding.ivCloudOff.visibility = View.GONE
             binding.tvCloudOff.visibility = View.GONE
-        }else{
+        } else {
             binding.webView.visibility = View.GONE
             binding.ivCloudOff.visibility = View.VISIBLE
             binding.tvCloudOff.visibility = View.VISIBLE
@@ -65,5 +69,10 @@ class WebViewFragment : Fragment() {
 
         // if you want to enable zoom feature
         binding.webView.settings.setSupportZoom(true)
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        requireActivity().findViewById<BottomNavigationView>(R.id.bottom_nav_bar).visibility = View.VISIBLE
     }
 }

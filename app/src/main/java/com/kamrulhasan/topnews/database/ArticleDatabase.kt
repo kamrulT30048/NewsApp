@@ -7,22 +7,26 @@ import androidx.room.RoomDatabase
 import com.kamrulhasan.topnews.model.BookMarkArticle
 import com.kamrulhasan.topnews.model.LocalArticle
 
-@Database(entities = [LocalArticle::class, BookMarkArticle::class], version = 1, exportSchema = false)
-abstract class ArticleDatabase : RoomDatabase(){
+@Database(
+    entities = [LocalArticle::class, BookMarkArticle::class],
+    version = 1,
+    exportSchema = false
+)
+abstract class ArticleDatabase : RoomDatabase() {
 
     abstract fun articleDao(): ArticleDao
 
-    companion object{
+    companion object {
         @Volatile
         private var INSTANCE: ArticleDatabase? = null
 
-        fun getDatabase(context: Context): ArticleDatabase{
+        fun getDatabase(context: Context): ArticleDatabase {
             val tempInstance = INSTANCE
-            if (tempInstance != null){
+            if (tempInstance != null) {
                 return tempInstance
             }
 
-            synchronized(this){
+            synchronized(this) {
                 val instance = Room.databaseBuilder(
                     context.applicationContext,
                     ArticleDatabase::class.java,
