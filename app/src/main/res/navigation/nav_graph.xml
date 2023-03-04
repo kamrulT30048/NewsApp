@@ -8,12 +8,19 @@
     <fragment
         android:id="@+id/homeFragment"
         android:name="com.kamrulhasan.topnews.fragment.HomeFragment"
-        android:label="Top News Home"
-        tools:layout="@layout/fragment_home" />
+        android:label="News"
+        tools:layout="@layout/fragment_home" >
+        <action
+            android:id="@+id/action_homeFragment_to_detailsFragment"
+            app:destination="@id/detailsFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_bookMarkFragment"
+            app:destination="@id/bookMarkFragment" />
+    </fragment>
     <fragment
         android:id="@+id/topNewsFragment"
         android:name="com.kamrulhasan.topnews.fragment.TopNewsFragment"
-        android:label="Top News"
+        android:label="Top Headlines"
         tools:layout="@layout/fragment_top_news" />
     <fragment
         android:id="@+id/sportsFragment"
@@ -24,5 +31,59 @@
         android:id="@+id/bookMarkFragment"
         android:name="com.kamrulhasan.topnews.fragment.BookMarkFragment"
         android:label="BookMark News"
-        tools:layout="@layout/fragment_book_mark" />
+        tools:layout="@layout/fragment_book_mark" >
+        <action
+            android:id="@+id/action_bookMarkFragment_to_homeFragment"
+            app:destination="@id/homeFragment" />
+        <action
+            android:id="@+id/action_bookMarkFragment_to_detailsFragment"
+            app:destination="@id/detailsFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/webViewFragment"
+        android:name="com.kamrulhasan.topnews.fragment.WebViewFragment"
+        android:label="News"
+        tools:layout="@layout/fragment_web_view">
+        <argument
+            android:name="newsUrl"
+            android:defaultValue="nothing"
+            app:argType="string" />
+    </fragment>
+    <fragment
+        android:id="@+id/generalFragment"
+        android:name="com.kamrulhasan.topnews.fragment.GeneralFragment"
+        android:label="General News" />
+
+    <fragment
+        android:id="@+id/detailsFragment"
+        android:name="com.kamrulhasan.topnews.fragment.DetailsFragment"
+        android:label="News Details"
+        tools:layout="@layout/fragment_details">
+        <argument
+            android:name="articleDetails"
+            app:argType="com.kamrulhasan.topnews.model.LocalArticle" />
+        <action
+            android:id="@+id/action_detailsFragment_to_webViewFragment"
+            app:destination="@id/webViewFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/businessFragment"
+        android:name="com.kamrulhasan.topnews.fragment.BusinessFragment"
+        android:label="Business News"
+        tools:layout="@layout/fragment_business" />
+    <fragment
+        android:id="@+id/entertainmentFragment"
+        android:name="com.kamrulhasan.topnews.fragment.EntertainmentFragment"
+        android:label="Entertainment News"
+        tools:layout="@layout/fragment_entertainment" />
+    <fragment
+        android:id="@+id/healthFragment"
+        android:name="com.kamrulhasan.topnews.fragment.HealthFragment"
+        android:label="Health News"
+        tools:layout="@layout/fragment_health" />
+    <fragment
+        android:id="@+id/technologyFragment"
+        android:name="com.kamrulhasan.topnews.fragment.TechnologyFragment"
+        android:label="Technology News"
+        tools:layout="@layout/fragment_technology" />
 </navigation>
